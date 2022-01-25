@@ -21,6 +21,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/paketo-buildpacks/libpak/sherpa"
+
 	"github.com/buildpacks/libcnb"
 	"github.com/paketo-buildpacks/libpak"
 	"github.com/paketo-buildpacks/libpak/bard"
@@ -45,25 +47,14 @@ func (w javaMemoryAssistant) Contribute(layer libcnb.Layer) (libcnb.Layer, error
 
 	return w.LayerContributor.Contribute(layer, func(artifact *os.File) (libcnb.Layer, error) {
 
-		/*paths, err := filepath.Glob(artifact."java-memory-assistant-*.jar")
-		if err != nil || len(paths) != 1 {
-			return libcnb.Layer{}, fmt.Errorf("unable to locate agent jar\n%w", err)
-		}*/
-		agentPath := artifact.Name()
-
-		// Create a bin directory so that the dependency is automatically added to $PATH at launch
-		binDir := filepath.Join(layer.Path, "bin")
-
-		if err := os.MkdirAll(binDir, 0755); err != nil {
-			return libcnb.Layer{}, fmt.Errorf("unable to mkdir\n%w", err)
+		file := filepath.Join(layer.Path, filepath.Base(artifact.Name()))
+		if err := sherpa.CopyFile(artifact, file); err != nil {
+			return libcnb.Layer{}, fmt.Errorf("unable to copy %s to %s\n%w", artifact.Name(), file, err)
 		}
 
-		if err := os.Symlink(filepath.Join(layer.Path, agentPath), filepath.Join(binDir, agentPath)); err != nil {
-			return libcnb.Layer{}, fmt.Errorf("unable to symlink agent\n%w", err)
-		}
 		// Finally add the agent to the JAVA_TOOL_OPTIONS env var via '-javaagent' flag - this points to the agent path
 		layer.LaunchEnvironment.Appendf("JAVA_TOOL_OPTIONS", " ",
-			"-javaagent:%s -Djma.check_interval=%s -Djma.thresholds.heap=%s", filepath.Join(layer.Path, agentPath), "5000ms", "60")
+			"-javaagent:%s -Djma.check_interval=%s -Djma.thresholds.heap=%s", file, "5000ms", "60%")
 
 		return layer, nil
 	})

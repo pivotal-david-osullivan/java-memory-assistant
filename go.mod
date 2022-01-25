@@ -3,14 +3,14 @@ module github.com/pivotal-david-osullivan/java-memory-assistant
 go 1.17
 
 require (
-	github.com/buildpacks/libcnb v1.21.0
-	github.com/onsi/gomega v1.13.0
+	github.com/buildpacks/libcnb v1.25.4
+	github.com/onsi/gomega v1.17.0
 	github.com/paketo-buildpacks/libpak v1.51.1
 	github.com/sclevine/spec v1.4.0
 )
 
 require (
-	github.com/BurntSushi/toml v0.3.1 // indirect
+	github.com/BurntSushi/toml v0.4.1 // indirect
 	github.com/Masterminds/semver/v3 v3.1.1 // indirect
 	github.com/heroku/color v0.0.6 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
