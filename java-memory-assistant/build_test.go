@@ -1,9 +1,7 @@
-package java_memory_assistant_test
+package java_memory_assistant
 
 import (
 	"testing"
-
-	java_memory_assistant "github.com/pivotal-david-osullivan/java-memory-assistant"
 
 	"github.com/buildpacks/libcnb"
 	. "github.com/onsi/gomega"
@@ -14,12 +12,12 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 
 	var (
 		Expect = NewWithT(t).Expect
-
-		ctx libcnb.BuildContext
+		build  Build
+		ctx    libcnb.BuildContext
 	)
 
 	it("contributes Java Memory Assistant agent", func() {
-		ctx.Plan.Entries = append(ctx.Plan.Entries, libcnb.BuildpackPlanEntry{Name: java_memory_assistant.PlanEntryAssistant})
+		ctx.Plan.Entries = append(ctx.Plan.Entries, libcnb.BuildpackPlanEntry{Name: "java-memory-assistant"})
 		ctx.Buildpack.Metadata = map[string]interface{}{
 			"dependencies": []map[string]interface{}{
 				{
@@ -31,7 +29,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 		}
 		ctx.StackID = "io.buildpacks.stacks.bionic"
 
-		result, err := java_memory_assistant.Build{}.Build(ctx)
+		result, err := build.Build(ctx)
 		Expect(err).NotTo(HaveOccurred())
 
 		Expect(result.Layers).To(HaveLen(1))

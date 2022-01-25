@@ -3,9 +3,10 @@ package java_memory_assistant_test
 import (
 	"testing"
 
+	java_memory_assistant "github.com/pivotal-david-osullivan/java-memory-assistant/java-memory-assistant"
+
 	"github.com/buildpacks/libcnb"
 	. "github.com/onsi/gomega"
-	java_memory_assistant "github.com/pivotal-david-osullivan/java-memory-assistant"
 	"github.com/sclevine/spec"
 )
 

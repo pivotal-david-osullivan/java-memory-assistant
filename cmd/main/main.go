@@ -21,7 +21,7 @@ import (
 
 	"github.com/paketo-buildpacks/libpak"
 	"github.com/paketo-buildpacks/libpak/bard"
-	java_memory_assistant "github.com/pivotal-david-osullivan/java-memory-assistant"
+	java_memory_assistant "github.com/pivotal-david-osullivan/java-memory-assistant/java-memory-assistant"
 )
 
 func main() {

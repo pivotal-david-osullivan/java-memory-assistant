@@ -1,4 +1,4 @@
-package java_memory_assistant_test
+package java_memory_assistant
 
 import (
 	"fmt"
@@ -6,8 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-
-	java_memory_assistant "github.com/pivotal-david-osullivan/java-memory-assistant"
 
 	"github.com/buildpacks/libcnb"
 	. "github.com/onsi/gomega"
@@ -45,7 +43,7 @@ func testJavaAgent(t *testing.T, context spec.G, it spec.S) {
 		}
 		dc := libpak.DependencyCache{CachePath: "testdata"}
 
-		j, bomEntry := java_memory_assistant.JavaMemoryAssistant(dep, dc)
+		j, bomEntry := JavaMemoryAssistant(dep, dc)
 		Expect(bomEntry.Launch).To(BeTrue())
 		Expect(bomEntry.Build).To(BeFalse())
 

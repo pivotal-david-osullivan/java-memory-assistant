@@ -1,6 +1,6 @@
 module github.com/pivotal-david-osullivan/java-memory-assistant
 
-go 1.16
+go 1.17
 
 require (
 	github.com/buildpacks/libcnb v1.21.0
@@ -8,4 +8,19 @@ require (
 	github.com/paketo-buildpacks/libpak v1.51.1
 	github.com/sclevine/spec v1.4.0
 )
+
+require (
+	github.com/BurntSushi/toml v0.3.1 // indirect
+	github.com/Masterminds/semver/v3 v3.1.1 // indirect
+	github.com/heroku/color v0.0.6 // indirect
+	github.com/imdario/mergo v0.3.12 // indirect
+	github.com/mattn/go-colorable v0.1.2 // indirect
+	github.com/mattn/go-isatty v0.0.8 // indirect
+	github.com/pelletier/go-toml v1.9.2 // indirect
+	golang.org/x/net v0.0.0-20210428140749-89ef3d95e781 // indirect
+	golang.org/x/sys v0.0.0-20210423082822-04245dca01da // indirect
+	golang.org/x/text v0.3.6 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
+)
+
 //replace "github.com/paketo-buildpacks/java-memory-assistant" => "/Users/davidos/workspace/paketo-buildpacks/java-memory-assistant"
