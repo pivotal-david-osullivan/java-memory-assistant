@@ -19,14 +19,15 @@ package main
 import (
 	"os"
 
-	"github.com/paketo-buildpacks/libpak"
 	"github.com/paketo-buildpacks/libpak/bard"
-	jma "github.com/pivotal-david-osullivan/java-memory-assistant/java-memory-assistant"
+	"github.com/paketo-buildpacks/libpak/sherpa"
+	"github.com/pivotal-david-osullivan/java-memory-assistant/helper"
 )
 
 func main() {
-	libpak.Main(
-		jma.Detect{},
-		jma.Build{Logger: bard.NewLogger(os.Stdout)},
-	)
+	sherpa.Execute(func() error {
+		return sherpa.Helpers(map[string]sherpa.ExecD{
+			"jma": helper.Properties{Logger: bard.NewLogger(os.Stdout)},
+		})
+	})
 }
