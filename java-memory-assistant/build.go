@@ -59,12 +59,22 @@ func (b Build) Build(context libcnb.BuildContext) (libcnb.BuildResult, error) {
 		}
 
 		// Call our function in java-memory-assistant.go that creates a 'LayerContributor' which will contribute our provided dependency to a new layer
-		sample, be := JavaMemoryAssistant(agentDependency, dc)
+		jma, be := JavaMemoryAssistant(agentDependency, dc)
 
 		// Add this new LayerContributor to our BuildResult's list of Contributors
-		result.Layers = append(result.Layers, sample)
-		result.BOM.Entries = append(result.BOM.Entries, be)
-	}
+		result.Layers = append(result.Layers, jma)
 
+		if be.Name != "" {
+			result.BOM.Entries = append(result.BOM.Entries, be)
+		}
+
+		p, be := libpak.NewHelperLayer(context.Buildpack, "properties")
+		result.Layers = append(result.Layers, p)
+
+		if be.Name != "" {
+			result.BOM.Entries = append(result.BOM.Entries, be)
+		}
+
+	}
 	return result, nil
 }

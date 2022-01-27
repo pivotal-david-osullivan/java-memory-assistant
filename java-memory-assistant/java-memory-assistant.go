@@ -42,19 +42,18 @@ func JavaMemoryAssistant(dependency libpak.BuildpackDependency, cache libpak.Dep
 	return javaMemoryAssistant{LayerContributor: contributor}, entry
 }
 
-func (w javaMemoryAssistant) Contribute(layer libcnb.Layer) (libcnb.Layer, error) {
-	w.LayerContributor.Logger = w.Logger
+func (j javaMemoryAssistant) Contribute(layer libcnb.Layer) (libcnb.Layer, error) {
+	j.LayerContributor.Logger = j.Logger
 
-	return w.LayerContributor.Contribute(layer, func(artifact *os.File) (libcnb.Layer, error) {
+	return j.LayerContributor.Contribute(layer, func(artifact *os.File) (libcnb.Layer, error) {
 
 		file := filepath.Join(layer.Path, filepath.Base(artifact.Name()))
 		if err := sherpa.CopyFile(artifact, file); err != nil {
 			return libcnb.Layer{}, fmt.Errorf("unable to copy %s to %s\n%w", artifact.Name(), file, err)
 		}
 
-		// Finally add the agent to the JAVA_TOOL_OPTIONS env var via '-javaagent' flag - this points to the agent path
 		layer.LaunchEnvironment.Appendf("JAVA_TOOL_OPTIONS", " ",
-			"-javaagent:%s -Djma.check_interval=%s -Djma.thresholds.heap=%s", file, "5000ms", "60%")
+			"-javaagent:%s", file)
 
 		return layer, nil
 	})

@@ -17,6 +17,8 @@
 package java_memory_assistant
 
 import (
+	"github.com/paketo-buildpacks/libpak/sherpa"
+
 	"github.com/buildpacks/libcnb"
 )
 
@@ -28,11 +30,20 @@ type Detect struct {
 }
 
 func (d Detect) Detect(context libcnb.DetectContext) (libcnb.DetectResult, error) {
+	/*cr, err := libpak.NewConfigurationResolver(context.Buildpack, nil)
+	if err != nil {
+		return libcnb.DetectResult{}, fmt.Errorf("unable to create configuration resolver\n%w", err)
+	}*/
+
+	if val := sherpa.ResolveBool("BP_JMA_ENABLED"); !val {
+		return libcnb.DetectResult{Pass: false}, nil
+	}
+
 	return libcnb.DetectResult{
 		Pass: true,
 		Plans: []libcnb.BuildPlan{
 			{
-				// Indicates that our Buildpack 'provides' a dependency called 'sample-agent'
+				// Indicates that our Buildpack 'provides' a dependency called 'java-memory-assistant'
 				Provides: []libcnb.BuildPlanProvide{
 					{Name: PlanEntryAssistant},
 				},

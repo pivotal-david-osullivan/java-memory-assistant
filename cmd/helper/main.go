@@ -19,6 +19,8 @@ package main
 import (
 	"os"
 
+	"github.com/paketo-buildpacks/libpak/effect"
+
 	"github.com/paketo-buildpacks/libpak/bard"
 	"github.com/paketo-buildpacks/libpak/sherpa"
 	"github.com/pivotal-david-osullivan/java-memory-assistant/helper"
@@ -27,7 +29,7 @@ import (
 func main() {
 	sherpa.Execute(func() error {
 		return sherpa.Helpers(map[string]sherpa.ExecD{
-			"jma": helper.Properties{Logger: bard.NewLogger(os.Stdout)},
+			"properties": helper.Properties{Logger: bard.NewLogger(os.Stdout), Executor: effect.NewExecutor()},
 		})
 	})
 }
