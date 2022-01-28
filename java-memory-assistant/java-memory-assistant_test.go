@@ -1,4 +1,20 @@
-package java_memory_assistant
+/*
+ * Copyright 2018-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package java_memory_assistant_test
 
 import (
 	"fmt"
@@ -10,6 +26,7 @@ import (
 	"github.com/buildpacks/libcnb"
 	. "github.com/onsi/gomega"
 	"github.com/paketo-buildpacks/libpak"
+	jma "github.com/pivotal-david-osullivan/java-memory-assistant/java-memory-assistant"
 	"github.com/sclevine/spec"
 )
 
@@ -38,12 +55,12 @@ func testJavaAgent(t *testing.T, context spec.G, it spec.S) {
 	it("contributes Java agent", func() {
 
 		dep := libpak.BuildpackDependency{
-			URI:    "http://localhost:8080/stub-agent.tar.xz",
-			SHA256: "9882935290fa44a8ab130390ad7d52f753a8f7a025c73606c0ad20364fe43f13",
+			URI:    "http://localhost:8080/java-memory-assistant.jar",
+			SHA256: "f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2",
 		}
 		dc := libpak.DependencyCache{CachePath: "testdata"}
 
-		j, bomEntry := JavaMemoryAssistant(dep, dc)
+		j, bomEntry := jma.JavaMemoryAssistant(dep, dc)
 		Expect(bomEntry.Launch).To(BeTrue())
 		Expect(bomEntry.Build).To(BeFalse())
 
@@ -56,7 +73,7 @@ func testJavaAgent(t *testing.T, context spec.G, it spec.S) {
 		Expect(layer.Launch).To(BeTrue())
 		Expect(filepath.Join(layer.Path, "java-memory-assistant.jar")).To(BeARegularFile())
 		Expect(layer.LaunchEnvironment["JAVA_TOOL_OPTIONS.delim"]).To(Equal(" "))
-		Expect(layer.LaunchEnvironment["JAVA_TOOL_OPTIONS.append"]).To(Equal(fmt.Sprintf("-javaagent:%s -Djma.check_interval=%s -Djma.thresholds.heap=%s",
-			filepath.Join(layer.Path, "java-memory-assistant.jar"), "5000ms", "60")))
+		Expect(layer.LaunchEnvironment["JAVA_TOOL_OPTIONS.append"]).To(Equal(fmt.Sprintf("-javaagent:%s",
+			filepath.Join(layer.Path, "java-memory-assistant.jar"))))
 	})
 }
