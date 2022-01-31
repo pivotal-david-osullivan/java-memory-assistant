@@ -53,6 +53,24 @@ api = "0.7"
       type = "Apache-2.0"
       uri  = "https://github.com/SAP/java-memory-assistant/blob/master/LICENSE"
 
+  [[metadata.configurations]]
+    default = "false"
+    description = "whether to contribute the JMA agent at build time"
+    build = true
+    name = "BP_JMA_ENABLED"
+
+  [[metadata.configurations]]
+    default = "false"
+    description = "whether to enable the JMA agent at runtime"
+    launch = true
+    name = "BPL_JMA_ENABLED"
+
+  [[metadata.configurations]]
+    default = "check_interval=5s,log_level=ERROR,max_frequency=1/1m,heap_dump_folder=/tmp,thresholds.heap=80%"
+    description = "arguments to configure the JMA agent"
+    launch = true
+    name = "BPL_JMA_ARGS"
+
 
 [[stacks]]
 id = "io.buildpacks.stacks.bionic"

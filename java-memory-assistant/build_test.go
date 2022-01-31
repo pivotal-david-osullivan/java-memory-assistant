@@ -65,7 +65,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					"version": "1.0.0",
 					"stacks":  []interface{}{"io.buildpacks.stacks.bionic"},
 					"cpes":    []string{"cpe:2.3:a:java-memory-assistant:java-memory-assistant:0.5.0:*:*:*:*:*:*:*"},
-					"purl":    "pkg:generic/watchexec@1.17.1?arch=amd64",
+					"purl":    "pkg:generic/java-memory-assistant@1.17.1?arch=amd64",
 				},
 			},
 		}
